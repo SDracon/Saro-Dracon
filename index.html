@@ -1,1 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SaroDracon — Books</title>
+  <style>
+    :root{
+      --bg:#0d1117; --card:#0f1720; --accent:#58a6ff; --muted:#9aa5b1; --text:#e6edf3;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+    header{padding:28px 20px;text-align:center;background:linear-gradient(180deg,#07101822,transparent)}
+    header h1{margin:0;font-size:28px}
+    header p{margin:6px 0 0;color:var(--muted)}
+    .container{max-width:1100px;margin:28px auto;padding:0 18px}
+    .intro{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+    .bio{flex:1;min-width:220px}
+    .bio p{color:var(--muted);margin:8px 0 0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;margin-top:20px}
+    .book{background:var(--card);border-radius:10px;padding:14px;display:flex;flex-direction:column;align-items:center;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,0.5)}
+    .cover{width:100%;height:300px;background:#0b0f14;border-radius:6px;background-size:cover;background-position:center}
+    .title{font-weight:700;margin:12px 0 6px}
+    .author{color:var(--muted);font-size:13px;margin-bottom:8px}
+    .desc{color:var(--muted);font-size:14px;margin-bottom:12px;min-height:40px}
+    .btn-row{display:flex;gap:10px}
+    .btn{padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px}
+    .primary{background:var(--accent);color:#071428}
+    .ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text)}
+    footer{padding:20px;text-align:center;color:var(--muted);margin-top:32px}
+
+    /* modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,12,0.7);display:none;align-items:center;justify-content:center;padding:20px;z-index:60}
+    .modal{background:var(--card);max-width:900px;width:100%;border-radius:10px;padding:18px;display:flex;gap:18px;align-items:flex-start}
+    .modal .cover-lg{width:260px;height:360px;background:#061018;background-size:cover;background-position:center;border-radius:6px;flex-shrink:0}
+    .modal .meta{color:var(--text)}
+    .modal h2{margin:0 0 6px}
+    .modal .meta p{color:var(--muted);margin:6px 0 12px}
+    .close-btn{margin-left:auto;background:transparent;border:none;color:var(--muted);font-size:20px;cursor:pointer}
+    @media(max-width:720px){
+      .modal{flex-direction:column;align-items:center}
+      .modal .cover-lg{width:60%;height:auto;padding-top:120%;background-size:cover}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>SaroDracon — Books</h1>
+  <p>Short fiction, technical guides, and how-to build notes. Click a book for details.</p>
+</header>
+
+<main class="container">
+  <section class="intro">
+    <div class="bio">
+      <h2>About the Author</h2>
+      <p>I'm SaroDracon — mechanic, tinkerer, and writer. I document builds, technical lessons, and fiction inspired by the garage and the track. Below are my published works and drafts.</p>
+    </div>
+    <div style="min-width:220px">
+      <h3>Stats</h3>
+      <p style="color:var(--muted)">Books: 3 • Editions: 5 • More coming soon</p>
+    </div>
+  </section>
+
+  <section class="grid" id="booksGrid">
+    <!-- Book card template: replace COVER_URL, BUY_LINK, and text -->
+    <article class="book" data-title="Title One" data-author="SaroDracon" data-desc="Longer description for Title One. Add details, excerpt, or notes here." data-cover="COVER_URL" data-buy="BUY_LINK">
+      <div class="cover" style="background-image:url('COVER_URL')"></div>
+      <div class="title">Title One</div>
+      <div class="author">by SaroDracon</div>
+      <div class="desc">Short one-line blurb for Title One.</div>
+      <div class="btn-row">
+        <a class="btn primary" href="BUY_LINK" target="_blank" rel="noopener">Buy / Download</a>
+        <button class="btn ghost" onclick="openModal(this.closest('.book'))">Details</button>
+      </div>
+    </article>
+
+    <article class="book" data-title="Tech Guide: Vortec Swaps" data-author="SaroDracon" data-desc="A step-by-step technical guide showing wiring, mounts, and PCM notes for Vortec engine swaps." data-cover="COVER_URL" data-buy="#">
+      <div class="cover" style="background-image:url('COVER_URL')"></div>
+      <div class="title">Tech Guide: Vortec Swaps</div>
+      <div class="author">by SaroDracon</div>
+      <div class="desc">Wiring diagrams, PCM tips, and swap checklists.</div>
+      <div class="btn-row">
+        <a class="btn primary" href="#" target="_blank" rel="noopener">Buy / Download</a>
+        <button class="btn ghost" onclick="openModal(this.closest('.book'))">Details</button>
+      </div>
+    </article>
+
+    <article class="book" data-title="Garage Stories" data-author="SaroDracon" data-desc="Short stories inspired by late-night wrenching and long highway drives." data-cover="COVER_URL" data-buy="#">
+      <div class="cover" style="background-image:url('COVER_URL')"></div>
+      <div class="title">Garage Stories</div>
+      <div class="author">by SaroDracon</div>
+      <div class="desc">Fiction rooted in the shop and the road.</div>
+      <div class="btn-row">
+        <a class="btn primary" href="#" target="_blank" rel="noopener">Buy / Download</a>
+        <button class="btn ghost" onclick="openModal(this.closest('.book'))">Details</button>
+      </div>
+    </article>
+
+  </section>
+</main>
+
+<footer>© 2026 SaroDracon — Replace links and covers in the HTML to match your books.</footer>
+
+<!-- Modal -->
+<div id="modalBackdrop" class="modal-backdrop" onclick="closeModal(event)">
+  <div class="modal" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
+    <button class="close-btn" onclick="closeModal(event)">×</button>
+    <div class="cover-lg" id="modalCover" style="background-image:url('')"></div>
+    <div class="meta">
+      <h2 id="modalTitle">Title</h2>
+      <div id="modalAuthor" style="color:var(--muted)">by Author</div>
+      <p id="modalDesc" style="margin-top:12px;color:var(--muted)"></p>
+      <div style="margin-top:14px">
+        <a id="modalBuy" class="btn primary" href="#" target="_blank" rel="noopener">Buy / Download</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal(bookEl){
+    const title = bookEl.dataset.title || '';
+    const author = bookEl.dataset.author || '';
+    const desc = bookEl.dataset.desc || '';
+    const cover = bookEl.dataset.cover || '';
+    const buy = bookEl.dataset.buy || '#';
+
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalAuthor').textContent = 'by ' + author;
+    document.getElementById('modalDesc').textContent = desc;
+    document.getElementById('modalCover').style.backgroundImage = cover ? `url('${cover}')` : '';
+    const modalBuy = document.getElementById('modalBuy');
+    modalBuy.href = buy;
+    modalBuy.style.display = buy === '#' ? 'none' : 'inline-block';
+
+    document.getElementById('modalBackdrop').style.display = 'flex';
+  }
+
+  function closeModal(e){
+    if(e && e.stopPropagation) e.stopPropagation();
+    document.getElementById('modalBackdrop').style.display = 'none';
+  }
+
+  // Accessibility: close on Escape
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeModal();
+  });
+</script>
+
+</body>
+</html>
 
